@@ -13,4 +13,3 @@ a = np.empty([3, 2], dtype=str)
 print(a)
 a[0][0] = "1"
 print(a)
-
