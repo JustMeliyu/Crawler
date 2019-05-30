@@ -43,6 +43,7 @@ def read_book(url):
         result = np.append(result, [current_info], axis=0)
         # result.append(current_info)
 
+    print(result)
     generate_excel("豆瓣读书", "小说", "./", result)
     n2 = datetime.now()
     logger.info((n2 - n1).total_seconds())

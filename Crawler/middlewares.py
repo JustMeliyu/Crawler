@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 
+# https://blog.csdn.net/freeking101/article/details/88019714
 # Define here the models for your spider middleware
 #
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from tools.config import USER_AGENT_LIST
+import random
+from tools.logger import logger
 
 
 class CrawlerSpiderMiddleware(object):
@@ -101,3 +105,18 @@ class CrawlerDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class UserAgentDownloaderMiddleware(object):
+    def __init__(self):
+        self.user_agent = random.choice(USER_AGENT_LIST)
+        logger.info("current User-Agent is {0}".format(self.user_agent))
+
+    def process_request(self, request, spider):
+        request.headers['User-Agent'] = self.user_agent
+
+    def process_response(self, request, response, spider):
+        return response
+
+    def process_exception(self, request, exception, spider):
+        pass
