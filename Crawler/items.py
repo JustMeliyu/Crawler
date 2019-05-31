@@ -7,8 +7,13 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst
-from tools.common import strip
+
+
+class ComonItemLoader(ItemLoader):
+    default_input_processor = MapCompose(lambda x: x.strip())
+    default_output_processor = TakeFirst()
 
 
 class CrawlerItem(scrapy.Item):
@@ -31,10 +36,10 @@ class BookItem(scrapy.Item):
     auth_name = scrapy.Field()
     press = scrapy.Field()
     publication_date = scrapy.Field()
-    price = scrapy.Field()
-    point = scrapy.Field(
-        input_processor=MapCompose(lambda x: x.strip())
+    price = scrapy.Field(
+        input_processor=MapCompose(lambda x: x.strip.rstrip("元"))
     )
+    point = scrapy.Field()
     person_num = scrapy.Field(
         input_processor=MapCompose(lambda x: x.strip()[:-4][1:])
     )
@@ -43,9 +48,16 @@ class BookItem(scrapy.Item):
     )
     book_detail_url = scrapy.Field()
 
-    def _get_info(self, v):
-        v = v.rsplit("/", 3)
-        self['auth_name'] = v[0].strip()
-        self['press'] = v[1].strip()
-        self['publication_date'] = v[2].strip()
-        self['price'] = v[3].strip().rstrip("元")
+
+class ProxyItem(scrapy.Item):
+    # 代理IP信息
+    ip = scrapy.Field()
+    port = scrapy.Field()
+    level = scrapy.Field(
+        input_processor=MapCompose(lambda x: x.strip())
+    )
+    http_type = scrapy.Field()
+    location = scrapy.Field()
+    speed = scrapy.Field(
+        input_processor=MapCompose(lambda x: x.rstrip("秒"))
+    )

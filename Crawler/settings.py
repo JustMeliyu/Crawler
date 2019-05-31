@@ -34,7 +34,7 @@ ROBOTSTXT_OBEY = True
 # CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-# COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 # TELNETCONSOLE_ENABLED = False
@@ -55,6 +55,7 @@ ROBOTSTXT_OBEY = True
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     'Crawler.middlewares.UserAgentDownloaderMiddleware': 400,
+    # 'Crawler.middlewares.IPDownloaderMiddleware': 401,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
 }
 
@@ -84,9 +85,7 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-   'Crawler.pipelines.CrawlerPipeline': 300,
-}
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -109,5 +108,4 @@ ITEM_PIPELINES = {
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-FEED_URI = "/home/ly/code/my_project/Crawler/Crawler/report/test.csv"
-FEED_FORMAT = 'csv'
+

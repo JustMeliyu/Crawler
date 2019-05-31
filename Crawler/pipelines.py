@@ -7,35 +7,59 @@
 #
 from scrapy.exceptions import DropItem
 from tools.logger import logger
-import time
+from tools.check_proxy import CheckProxy
 
 
-class CrawlerPipeline(object):
+class DoubanPipeline(object):
     # @classmethod
     # def from_settings(cls, settings):
     #     """一般用于获取setting中的信息"""
-    #     pass
+    #     logger.info("=============================="*3)
 
     def process_item(self, item, spider):
-        logger.info("------------------------------"*3)
-        item['auth_name'] = []
-        item['press'] = []
-        item['publication_date'] = []
-        item['price'] = []
-
-        for ai in item['auth_info']:
-            ai = ai.rsplit("/", 3)
-            item['auth_name'].append(ai[0].strip())
-            item['press'].append(ai[1].strip())
-            item['publication_date'].append(ai[2].strip())
-            item['price'].append(ai[3].strip())
+        logger.info("current spider is {0}".format(spider.name))
+        ai = item['auth_info'].rsplit("/", 3)
+        item['auth_name'] = ai[0].strip()
+        item['press'] = ai[1].strip()
+        item['publication_date'] = ai[2].strip()
+        item['price'] = ai[3].strip()
+        logger.info("-----------------------{0}".format(item['person_num']))
         del item['auth_info']
-        logger.info("=+++++++++={0}".format(item['auth_name']))
-        # if item['price'].endwith("元"):
-        #     item['price'] = item['price'].rstrip("元")
-        #     logger.info("price is {0}".format(item['price']))
-        # else:
-        #     raise DropItem("price format error")
+        return item
+
+    def open_spide(self, spider):
+        """run with spider open"""
+        logger.info("3333333333333333333333333333")
+
+    def close_spide(self, spider):
+        """run with spider close"""
+        logger.info("2222222222222222222222222222")
+
+
+class ProxyPipeline(object):
+    # @classmethod
+    # def from_settings(cls, settings):
+    #     """一般用于获取setting中的信息"""
+    #     logger.info("=============================="*3)
+    def __init__(self):
+        # self.LEVEL = "高匿名"
+        self.LEVEL = "透明"
+
+    def process_item(self, item, spider):
+        logger.info("current spider is {0}".format(spider.name))
+        if item['level'] != self.LEVEL:
+            logger.error("LevelError. current ip {0} level is {1}".format(item['ip'], item['level']))
+            raise DropItem
+
+        if float(item['speed']) > 2:
+            logger.error("SpeedError. current ip {0} contect time {1} is too long {1}".format(item['ip'], item['speed']))
+            raise DropItem
+
+        cp = CheckProxy()
+        if not cp.is_valid(item['ip'] + item['port']):
+            logger.error("ConnectError. current ip {0} is invalid".format(item['ip']))
+            raise DropItem
+        logger.info("SUCCESS")
         return item
 
     def open_spide(self, spider):

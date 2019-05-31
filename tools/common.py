@@ -107,9 +107,3 @@ def run_method(func, *args, **kwargs):
     result = func(*args, **kwargs)
     logger.info(result)
     return result
-
-
-def strip(varchar):
-    for v in range(len(varchar)):
-        varchar[v] = varchar[v].strip() + "success"
-    return varchar

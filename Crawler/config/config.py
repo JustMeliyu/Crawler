@@ -72,3 +72,11 @@ USER_AGENT_LIST = [
     "Mozilla/5.0 (Linux; U; Android 1.6; es-es; SonyEricssonX10i Build/R1FA016) AppleWebKit/528.5  (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1",
     "Mozilla/5.0 (Linux; U; Android 1.6; en-us; SonyEricssonX10i Build/R1AA056) AppleWebKit/528.5  (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1",
 ]
+
+IPPOOLS = [
+    "58.250.17.74:808",
+    "180.118.128.123:9000",
+    "112.85.168.161:9999"
+    "124.237.83.14:53281",
+    "111.40.84.73:9797"
+]

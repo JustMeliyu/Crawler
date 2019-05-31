@@ -7,7 +7,7 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-from tools.config import USER_AGENT_LIST
+from Crawler.config.config import USER_AGENT_LIST, IPPOOLS
 import random
 from tools.logger import logger
 
@@ -114,6 +114,21 @@ class UserAgentDownloaderMiddleware(object):
 
     def process_request(self, request, spider):
         request.headers['User-Agent'] = self.user_agent
+
+    def process_response(self, request, response, spider):
+        return response
+
+    def process_exception(self, request, exception, spider):
+        pass
+
+
+class IPDownloaderMiddleware(object):
+    def __init__(self):
+        self.ip = random.choice(IPPOOLS)
+        logger.info("current IP addr is {0}".format(self.ip))
+
+    def process_request(self, request, spider):
+        request.meta['proxy'] = "http://" + self.ip
 
     def process_response(self, request, response, spider):
         return response
